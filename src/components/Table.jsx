@@ -1,23 +1,31 @@
 import React, { useState } from 'react';
-import { 
-  Table as ChakraTable, Thead, Tbody, Tr, Th, Td, Button, Box, Badge,  useDisclosure 
+import {
+  Table as ChakraTable, Thead, Tbody, Tr, Th, Td, Button, Box, Badge, useDisclosure
 } from '@chakra-ui/react';
 import AssignModal from './AssignModal';
+import ContactModal from './ContactModal'; 
 
 const Table = ({ columns, data }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isAssignOpen, onOpen: onAssignOpen, onClose: onAssignClose } = useDisclosure();
+  const { isOpen: isContactOpen, onOpen: onContactOpen, onClose: onContactClose } = useDisclosure();
+
   const [selectedRow, setSelectedRow] = useState(null);
-  
+  const [selectedTechnician, setSelectedTechnician] = useState(null); 
+
   const handleAssignClick = (row) => {
     setSelectedRow(row);
-    onOpen();
+    onAssignOpen();
   };
-  
+
   const handleContactClick = (row) => {
-    console.log('Contact Technician clicked for:', row);
+    setSelectedTechnician({
+      description:"testing",
+      contactNumber:"3424324",
+      email:"abc@gmail.com"
+    }); 
+    onContactOpen();
   };
-  
-  
+
   return (
     <Box overflowX="auto">
       <ChakraTable variant="striped" colorScheme="purple" minWidth="full">
@@ -49,7 +57,7 @@ const Table = ({ columns, data }) => {
                 </Td>
               ))}
               <Td>
-                {row.technician !='N/A' ? (
+                {row.technician !== 'N/A' ? (
                   <Button
                     onClick={() => handleContactClick(row)}
                     colorScheme="green"
@@ -71,13 +79,18 @@ const Table = ({ columns, data }) => {
           ))}
         </Tbody>
       </ChakraTable>
-<AssignModal
-
-    isOpen={isOpen}
-    onClose={onClose}
-    selectedRow={selectedRow}
-/>
-     
+      
+      <AssignModal
+        isOpen={isAssignOpen}
+        onClose={onAssignClose}
+        selectedRow={selectedRow}
+      />
+      
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={onContactClose}
+        technician={selectedTechnician} 
+      />
     </Box>
   );
 };

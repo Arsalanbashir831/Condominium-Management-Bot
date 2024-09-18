@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { BACKEND_URL } from "../Constant";
 import { Flex, Spinner } from "@chakra-ui/react";
+import { useRecoilValue } from "recoil";
+import { refreshState } from "../atoms/refreshState";
 
 const TicketList = () => {
   const [ticketList, setTicketList] = useState([]);
-  const [isLoading , setLoading] = useState(false)
+  const [isLoading , setLoading] = useState(false);
+  const refresh  = useRecoilValue(refreshState)
   const processTicketsData = (data) => {
     return data.map(ticket => ({
-        name: ticket.user?.name || '',
-        email: ticket.user?.email || '',
-        condominium: ticket.user?.condominium?.name || '',
+      id:ticket.id,
+        name: ticket.username || '',
+        email: ticket.user_email || '',
+        condominium: ticket.user_condominium || '',
         problemStatement: ticket.ProblemStatement || '',
         priority: ticket.isUrgent ? 'Urgent' : 'Normal',
-        prefCommunication: ticket.assigned_technicians?.prefCommunication?.name || 'N/A',
-        technician: ticket.assigned_technicians ? ticket.assigned_technicians.CompanyName || 'N/A' : 'N/A',
+        technician: ticket.technician_name ? ticket.technician_name || 'N/A' : 'N/A',
     }));
 };
   const fetchTickets = async () => {
@@ -25,7 +28,7 @@ const TicketList = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
       });
       if (response.ok) {
@@ -45,21 +48,18 @@ const TicketList = () => {
 
   useEffect(() => {
     fetchTickets();
-  }, []);
+  }, [refresh]);
   const columns = [
+    { Header: "Id", accessor: "id" },
     { Header: "Name", accessor: "name" },
     { Header: "Email", accessor: "email" },
     { Header: "Condominium", accessor: "condominium" },
     { Header: "Problem Statment", accessor: "problemStatement" },
     { Header: "Priority", accessor: "priority",type: 'badge' },
-    { Header: "Preferred Communication", accessor: "prefCommunication" },
     { Header: "Technician", accessor: "technician" },
   ];
 
  
-  const handleActionClick = (row) => {
-    console.log("Action clicked for:", row);
-  };
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Ticket List</h1>
@@ -68,7 +68,7 @@ const TicketList = () => {
         <Spinner size={'xl'} color="purple.600"/>
       </Flex>
       </>:<>
-        <Table columns={columns} data={ticketList} onActionClick={handleActionClick} />
+        <Table columns={columns} data={ticketList}  />
       </>}
       
     </div>
