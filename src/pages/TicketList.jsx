@@ -12,12 +12,16 @@ const TicketList = () => {
   const processTicketsData = (data) => {
     return data.map(ticket => ({
       id:ticket.id,
-        name: ticket.username || '',
-        email: ticket.user_email || '',
-        condominium: ticket.user_condominium || '',
+        name: ticket.user.name || '',
+        email: ticket.user.email || '',
+        contactNumber: ticket.user.contactNumber || '',
+        condominium: ticket.user.condominium.name || '',
         problemStatement: ticket.ProblemStatement || '',
-        priority: ticket.isUrgent ? 'Urgent' : 'Normal',
-        technician: ticket.technician_name ? ticket.technician_name || 'N/A' : 'N/A',
+        priority: ticket.priority || '',
+        technician: ticket.assigned_technicians.CompanyName || '',
+        role: ticket.assigned_technicians.SectorName || '',
+        prefCommunication: ticket.assigned_technicians.prefCommunication.name || '',
+        technicianContact: ticket.assigned_technicians.prefCommunication.name==='Email'?ticket.assigned_technicians.email:ticket.assigned_technicians.ContactNumber,
     }));
 };
   const fetchTickets = async () => {
@@ -53,13 +57,16 @@ const TicketList = () => {
     { Header: "Id", accessor: "id" },
     { Header: "Name", accessor: "name" },
     { Header: "Email", accessor: "email" },
+    { Header: "Contact Number", accessor: "contactNumber" },
     { Header: "Condominium", accessor: "condominium" },
     { Header: "Problem Statment", accessor: "problemStatement" },
     { Header: "Priority", accessor: "priority",type: 'badge' },
     { Header: "Technician", accessor: "technician" },
+    { Header: "Technician Role", accessor: "role" },
+    { Header: "Preffered Communication", accessor: "prefCommunication" },
+    { Header: "Phone/email", accessor: "technicianContact" },
   ];
 
- 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Ticket List</h1>

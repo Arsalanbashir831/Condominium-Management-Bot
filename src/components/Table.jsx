@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  Table as ChakraTable, Thead, Tbody, Tr, Th, Td, Button, Box, Badge, useDisclosure
-} from '@chakra-ui/react';
-import AssignModal from './AssignModal';
-import ContactModal from './ContactModal'; 
+  Table as ChakraTable,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Box,
+  Badge,
+  useDisclosure,
+  Flex,
+} from "@chakra-ui/react";
+import AssignModal from "./AssignModal";
+import ContactModal from "./ContactModal";
 
 const Table = ({ columns, data }) => {
-  const { isOpen: isAssignOpen, onOpen: onAssignOpen, onClose: onAssignClose } = useDisclosure();
-  const { isOpen: isContactOpen, onOpen: onContactOpen, onClose: onContactClose } = useDisclosure();
+  const {
+    isOpen: isAssignOpen,
+    onOpen: onAssignOpen,
+    onClose: onAssignClose,
+  } = useDisclosure();
+  const {
+    isOpen: isContactOpen,
+    onOpen: onContactOpen,
+    onClose: onContactClose,
+  } = useDisclosure();
 
   const [selectedRow, setSelectedRow] = useState(null);
-  const [selectedTechnician, setSelectedTechnician] = useState(null); 
+  const [selectedTechnician, setSelectedTechnician] = useState(null);
 
   const handleAssignClick = (row) => {
     setSelectedRow(row);
@@ -19,10 +37,10 @@ const Table = ({ columns, data }) => {
 
   const handleContactClick = (row) => {
     setSelectedTechnician({
-      description:"testing",
-      contactNumber:"3424324",
-      email:"abc@gmail.com"
-    }); 
+      description: "testing",
+      contactNumber: "3424324",
+      email: "abc@gmail.com",
+    });
     onContactOpen();
   };
 
@@ -36,7 +54,9 @@ const Table = ({ columns, data }) => {
                 {column.Header}
               </Th>
             ))}
-            <Th color="white" fontWeight="semibold">Actions</Th>
+            <Th color="white" fontWeight="semibold">
+              Actions
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -44,53 +64,65 @@ const Table = ({ columns, data }) => {
             <Tr key={rowIndex}>
               {columns.map((column) => (
                 <Td key={column.accessor} color="gray.600">
-                  {column.type === 'badge' ? (
+                  {column.type === "badge" ? (
                     <Badge
-                      colorScheme={row[column.accessor] === 'Urgent' ? 'red' : 'green'}
+                      colorScheme={
+                        row[column.accessor] === "very urgent"
+                          ? "red"
+                          : row[column.accessor] === "urgent"
+                          ? "yellow"
+                          : "green"
+                      }
                       variant="solid"
                     >
-                      {row[column.accessor] === 'Urgent' ? 'Urgent' : 'Normal'}
+                      {row[column.accessor] === "very urgent"
+                        ? "Very Urgent"
+                        : row[column.accessor] === "urgent"
+                        ? "Urgent"
+                        : "Normal"}
                     </Badge>
                   ) : (
-                    row[column.accessor] || 'N/A'
+                    row[column.accessor] || "N/A"
                   )}
                 </Td>
               ))}
               <Td>
-                {row.technician !== 'N/A' ? (
-                  <Button
-                    onClick={() => handleContactClick(row)}
-                    colorScheme="green"
+            <Flex gap={2}>
+            <Button
+                    // onClick={() => handleContactClick(row)}
+                    colorScheme="blue"
                     variant="solid"
                   >
-                    Contact Technician
+                  Edit
                   </Button>
-                ) : (
+              
                   <Button
-                    onClick={() => handleAssignClick(row)}
-                    colorScheme="purple"
+                    // onClick={() => handleAssignClick(row)}
+                    colorScheme="red"
                     variant="solid"
                   >
-                    Assign Technician
+                   Close Ticket
                   </Button>
-                )}
+            </Flex>
+              
+             
               </Td>
             </Tr>
           ))}
         </Tbody>
       </ChakraTable>
-      
-      <AssignModal
+
+      {/* <AssignModal
         isOpen={isAssignOpen}
         onClose={onAssignClose}
         selectedRow={selectedRow}
       />
-      
+
       <ContactModal
         isOpen={isContactOpen}
         onClose={onContactClose}
-        technician={selectedTechnician} 
-      />
+        technician={selectedTechnician}
+      /> */}
     </Box>
   );
 };
