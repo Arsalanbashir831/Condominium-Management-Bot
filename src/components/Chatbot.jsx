@@ -16,7 +16,7 @@ const Chatbot = () => {
       if (!localStorage.getItem('email')) {
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: "Hi! Please provide your email/contact number to assist you further." },
+          { sender: "bot", text: "Salve, vi preghiamo di fornire il vostro numero di e-mail/contatto per potervi assistere ulteriormente." },
         ]);
       } else {
         const email = localStorage.getItem('email');
@@ -60,9 +60,9 @@ const Chatbot = () => {
     if (userDetails) {
       setUserDetail(userDetails);
       setStep("problem");
-      addBotMessage("Thanks! Now, please tell me your problem.");
+      addBotMessage("Grazie! Ora, per favore, spiegami il tuo problema.");
     } else {
-      addBotMessage("Details not found. Please provide a valid email/contact number.");
+      addBotMessage("Dettagli non trovati. Si prega di fornire un numero di e-mail/contatto valido.");
     }
   };
 
