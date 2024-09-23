@@ -34,6 +34,8 @@ const Table = ({ columns, data }) => {
     setSelectedRow(row);
     onAssignOpen();
   };
+  console.log(data);
+  
 
   const handleContactClick = (row) => {
     setSelectedTechnician({
@@ -67,17 +69,17 @@ const Table = ({ columns, data }) => {
                   {column.type === "badge" ? (
                     <Badge
                       colorScheme={
-                        row[column.accessor] === "fairly urgent"
+                        row[column.accessor] === "fairly urgent." ||row[column.accessor] === "fairly urgent"
                           ? "red"
-                          : row[column.accessor] === "urgent"
+                          :  row[column.accessor] === "urgent." ||row[column.accessor] === "urgent"
                           ? "yellow"
                           : "green"
                       }
                       variant="solid"
                     >
-                      {row[column.accessor] === "fairly urgent"
-                        ? "Fairly urgent."
-                        : row[column.accessor] === "urgent"
+                      {  row[column.accessor] === "fairly urgent." ||row[column.accessor] === "fairly urgent"
+                        ? "Fairly Urgent"
+                        : row[column.accessor] === "urgent." ||row[column.accessor] === "urgent"
                         ? "Urgent"
                         : "Normal"}
                     </Badge>
