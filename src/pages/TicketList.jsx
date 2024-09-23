@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { BACKEND_URL } from "../Constant";
-import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner, Text, Tooltip } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { refreshState } from "../atoms/refreshState";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const TicketList = () => {
   const [ticketList, setTicketList] = useState([]);
   const [isLoading , setLoading] = useState(false);
   const refresh  = useRecoilValue(refreshState)
+const navigation = useNavigate()
   const processTicketsData = (data) => {
     return data.map(ticket => ({
       id:ticket.id,
@@ -71,6 +74,15 @@ const TicketList = () => {
 
   return (
     <div className="p-4">
+    <Box py={5}>
+    <Button onClick={()=> navigation('/')} colorScheme="purple"  >
+    <Flex gap={2} alignItems={'center'}>
+    <FaArrowLeft color="white" /> 
+    <Text> Go Back</Text>
+    </Flex>
+      </Button>
+    </Box>
+    
       <h1 className="text-2xl font-bold mb-4">Ticket List</h1>
       <Flex width={'full'} justify={'end'} my={3}>
      <Tooltip label="Click to add a new ticket" aria-label="Add Ticket Tooltip">
