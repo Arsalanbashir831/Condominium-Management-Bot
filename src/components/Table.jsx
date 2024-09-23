@@ -67,7 +67,7 @@ const Table = ({ columns, data }) => {
                   {column.type === "badge" ? (
                     <Badge
                       colorScheme={
-                        row[column.accessor] === "very urgent"
+                        row[column.accessor] === "fairly urgent"
                           ? "red"
                           : row[column.accessor] === "urgent"
                           ? "yellow"
@@ -75,8 +75,8 @@ const Table = ({ columns, data }) => {
                       }
                       variant="solid"
                     >
-                      {row[column.accessor] === "very urgent"
-                        ? "Very Urgent"
+                      {row[column.accessor] === "fairly urgent"
+                        ? "Fairly urgent."
                         : row[column.accessor] === "urgent"
                         ? "Urgent"
                         : "Normal"}
