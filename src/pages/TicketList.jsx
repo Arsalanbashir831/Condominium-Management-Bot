@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "../components/Table";
 import { BACKEND_URL } from "../Constant";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Tooltip } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { refreshState } from "../atoms/refreshState";
 
@@ -22,6 +22,7 @@ const TicketList = () => {
         role: ticket.assigned_technicians.SectorName || '',
         prefCommunication: ticket.assigned_technicians.prefCommunication.name || '',
         technicianContact: ticket.assigned_technicians.prefCommunication.name==='Email'?ticket.assigned_technicians.email:ticket.assigned_technicians.ContactNumber,
+        status:"Pending"
     }));
 };
   const fetchTickets = async () => {
@@ -65,11 +66,21 @@ const TicketList = () => {
     { Header: "Technician Role", accessor: "role" },
     { Header: "Preffered Communication", accessor: "prefCommunication" },
     { Header: "Phone/email", accessor: "technicianContact" },
+    { Header: "Status", accessor: "status" },
   ];
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Ticket List</h1>
+      <Flex width={'full'} justify={'end'} my={3}>
+     <Tooltip label="Click to add a new ticket" aria-label="Add Ticket Tooltip">
+     <Button colorScheme="green" >
+        Add Ticket
+      </Button>
+     </Tooltip>
+      
+      </Flex>
+      
       {isLoading ? <>
       <Flex justifyContent={'center'}  alignItems={'center'} h={'100vh'}>
         <Spinner size={'xl'} color="purple.600"/>
