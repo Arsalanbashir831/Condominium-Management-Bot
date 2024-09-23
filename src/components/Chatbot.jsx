@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BACKEND_URL } from "../Constant";
-import { useToast } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -158,6 +158,12 @@ const Chatbot = () => {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
+     <Button  onClick={() => {
+    localStorage.removeItem('email');
+    window.location.reload(); // Corrected here
+  }} colorScheme="blue">
+      Add New Email
+     </Button>
       <div className="w-full max-w-lg p-6 bg-white shadow-2xl rounded-lg border border-gray-300">
         <div className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg shadow-inner" ref={chatRef}>
           {messages.map((message, index) => (
