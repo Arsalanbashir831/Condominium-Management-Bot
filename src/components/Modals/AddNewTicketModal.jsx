@@ -16,10 +16,11 @@ import {
   useDisclosure,
   Box,
   VStack,
-  useToast, // Import useToast
+  useToast,
+  Spinner, // Import useToast
 } from '@chakra-ui/react';
 import { BACKEND_URL } from '../../Constant';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { refreshState } from '../../atoms/refreshState';
 
 const AddNewTicketModal = () => {
@@ -33,6 +34,8 @@ const AddNewTicketModal = () => {
   const [userList, setUserList] = useState([]);
   const [technicianList, setTechnicianList] = useState([]);
  const [refresh , setRefresh] = useRecoilState(refreshState)
+ const [isLoading , setLoading] = useState(false)
+ 
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -52,7 +55,8 @@ const AddNewTicketModal = () => {
 
     const fetchAllTechnicians = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/technician`, {
+        setLoading(true)
+        const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${user.condominium.id}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -61,22 +65,24 @@ const AddNewTicketModal = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally{
+        setLoading(false)
       }
     };
     fetchAllTechnicians();
     fetchUsers();
-  }, []);
+  }, [technicianList , user.condominium.id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BACKEND_URL}/api/ticket`, {
+      const response = await fetch(`${BACKEND_URL}/api/ticket/manual`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Set content type for JSON
         },
         body: JSON.stringify({
-          userId: user,
+          userId: user.id,
           priority: priority,
           ProblemStatement: problemStatement,
           technicianId: technician,
@@ -122,6 +128,7 @@ const AddNewTicketModal = () => {
       onClose();
     }
   };
+console.log(user);
 
   return (
     <>
@@ -142,14 +149,17 @@ const AddNewTicketModal = () => {
                   <FormLabel>Select User</FormLabel>
                   <Select
                     placeholder="Select user"
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
+                    value={JSON.stringify(user)}
+                    onChange={(e) => setUser(JSON.parse(e.target.value))}
                   >
+                 
                     {userList?.map((data) => (
-                      <option key={data.id} value={data.id}>
+                      <option key={data.id} value={JSON.stringify(data)}>
                         {data.name} {data.surname}
                       </option>
                     ))}
+            
+                   
                   </Select>
                 </FormControl>
 
