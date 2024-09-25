@@ -29,9 +29,13 @@ const EditModal = ({ isOpen, onClose, selectedRow }) => {
     userId: "",
     contactNumber: "", 
     email: "", 
+  status : ""
+   
   });
 const [refresh , setRefresh] = useRecoilState(refreshState)
   const toast = useToast(); // Initialize toast
+
+console.log(selectedRow);
 
   useEffect(() => {
     if (selectedRow) {
@@ -43,6 +47,8 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
         userId: selectedRow.user_id,
         contactNumber: selectedRow.contactNumber || "",
         email: selectedRow.email || "",
+        status:selectedRow.status_id
+        
       });
     }
   }, [selectedRow]);
@@ -100,6 +106,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
           priority: formData.priority,
           ProblemStatement: formData.ProblemStatement,
           description: formData.description,
+          statusId:formData.status
         }),
       });
 
@@ -177,6 +184,19 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
               <option value="urgent">Urgent</option>
               <option value="not urgent">Not Urgent</option>
               <option value="fairly urgent">Fairly Urgent</option>
+            </Select>
+          </FormControl>
+          <FormControl mb={4}>
+            <FormLabel>Status</FormLabel>
+            <Select
+              name="status"
+              value={formData.status}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Status</option>
+              <option value="1">Pending</option>
+              <option value="2">Accepted</option>
+              <option value="3">Rejected</option>
             </Select>
           </FormControl>
 

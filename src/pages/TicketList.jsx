@@ -43,6 +43,7 @@ const TicketList = () => {
       status: ticket.status.name,
       technician_id: ticket.assigned_technicians.id,
       user_id: ticket.user.id,
+      status_id : ticket.status.id
     }));
   };
 

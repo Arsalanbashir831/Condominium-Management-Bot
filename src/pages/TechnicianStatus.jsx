@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Select, useToast } from '@chakra-ui/react';
 import { BACKEND_URL } from '../Constant';
-
+import { Box, Heading, Text, Icon } from '@chakra-ui/react';
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 const TechnicianStatus = () => {
   const { ticketId, statusId: initialStatusId } = useParams(); // Get ticketId and statusId from the route
   const [statusId, setStatusId] = useState(initialStatusId); // Store selected statusId
@@ -67,9 +68,32 @@ const TechnicianStatus = () => {
   }, [initialStatusId]); 
 
   return (
-    <div>
-    <h1>Status Updated</h1>
-    </div>
+    <Box
+    maxW="md"
+    mx="auto"
+    mt={8}
+    p={6}
+    bg="gray.50"
+    borderRadius="lg"
+    shadow="md"
+    textAlign="center"
+  >
+    {statusId === "2" ? (
+      <Icon as={AiOutlineCheckCircle} w={16} h={16} color="green.500" />
+    ) : (
+      <Icon as={AiOutlineCloseCircle} w={16} h={16} color="red.500" />
+    )}
+
+    <Heading as="h1" size="lg" mt={4}>
+      {statusId === "2" ? 'Ticket Approved' : 'Ticket Rejected'}
+    </Heading>
+
+    <Text mt={2} color="gray.600">
+      {statusId === "2"
+        ? 'Your request for approval of the ticket has been accepted successfully.'
+        : 'Your request for rejection has been accepted.'}
+    </Text>
+  </Box>
   );
 };
 

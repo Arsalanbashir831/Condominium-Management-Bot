@@ -35,7 +35,7 @@ const AddNewTicketModal = () => {
   const [technicianList, setTechnicianList] = useState([]);
  const [refresh , setRefresh] = useRecoilState(refreshState)
  const [isLoading , setLoading] = useState(false)
- 
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -56,7 +56,7 @@ const AddNewTicketModal = () => {
     const fetchAllTechnicians = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${user.condominium.id}`, {
+        const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${user?.condominium?.id}`, {
           method: 'GET',
         });
         if (response.ok) {
@@ -71,7 +71,7 @@ const AddNewTicketModal = () => {
     };
     fetchAllTechnicians();
     fetchUsers();
-  }, [technicianList , user.condominium.id]);
+  }, [technicianList , user?.condominium?.id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
