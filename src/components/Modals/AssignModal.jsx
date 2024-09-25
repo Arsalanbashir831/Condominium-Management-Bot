@@ -1,9 +1,9 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import TechnicianCard from './TechnicianCard';
-import { BACKEND_URL } from '../Constant';
+import TechnicianCard from '../TechnicianCard';
+import { BACKEND_URL } from '../../Constant';
 import { useRecoilState } from 'recoil';
-import { refreshState } from '../atoms/refreshState';
+import { refreshState } from '../../atoms/refreshState';
 
 const AssignModal = ({ isOpen, onClose, selectedRow }) => {
   const [technicians, setTechnicians] = useState([]);

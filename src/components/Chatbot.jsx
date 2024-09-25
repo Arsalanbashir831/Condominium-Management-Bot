@@ -74,7 +74,7 @@ const Chatbot = () => {
       console.log("problem statement",tagline);
       
       setStep("completed");
-    await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id).then(()=>{
+    await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id,true).then(()=>{
       toast({
         title: "Ticket Created",
         description: "Your support ticket has been created successfully.",
@@ -116,12 +116,12 @@ const Chatbot = () => {
     }
   };
 
-  const addTicket = async (userId, priority, ProblemStatement, condominiumId) => {
+  const addTicket = async (userId, priority, ProblemStatement, condominiumId, IsPermitToAutoMail) => {
     try {
       const response = await fetch(`${BACKEND_URL}/api/ticket/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, priority, ProblemStatement, condominiumId }),
+        body: JSON.stringify({ userId, priority, ProblemStatement, condominiumId , IsPermitToAutoMail }),
       });
       return response.ok ? await response.json() : null;
     } catch (error) {
@@ -134,7 +134,7 @@ const Chatbot = () => {
       const response = await fetch(`${BACKEND_URL}/api/aichat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ problemStatement, userId: userDetail.id }),
+        body: JSON.stringify({ problemStatement, userId: userDetail.id ,username:userDetail.name}),
       });
       return response.ok ? await response.json() : { response: "Sorry, there was an issue processing your problem.", hasNextQuestion: false };
     } catch (error) {
@@ -160,7 +160,7 @@ const Chatbot = () => {
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
      <Button  onClick={() => {
     localStorage.removeItem('email');
-    window.location.reload(); // Corrected here
+    window.location.reload(); 
   }} colorScheme="blue">
       Add New Email
      </Button>

@@ -12,38 +12,32 @@ import {
   useDisclosure,
   Flex,
 } from "@chakra-ui/react";
-import AssignModal from "./AssignModal";
-import ContactModal from "./ContactModal";
+import EditModal from "./Modals/EditModal";
+import CloseTicketModal from "./Modals/CloseTicketModal";
 
 const Table = ({ columns, data }) => {
   const {
-    isOpen: isAssignOpen,
-    onOpen: onAssignOpen,
-    onClose: onAssignClose,
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
   } = useDisclosure();
+
   const {
-    isOpen: isContactOpen,
-    onOpen: onContactOpen,
-    onClose: onContactClose,
+    isOpen: isCloseTicketOpen,
+    onOpen: onCloseTicketOpen,
+    onClose: onCloseTicketClose,
   } = useDisclosure();
 
   const [selectedRow, setSelectedRow] = useState(null);
-  const [selectedTechnician, setSelectedTechnician] = useState(null);
 
-  const handleAssignClick = (row) => {
+  const handleEditClick = (row) => {
     setSelectedRow(row);
-    onAssignOpen();
+    onEditOpen();
   };
-  console.log(data);
-  
 
-  const handleContactClick = (row) => {
-    setSelectedTechnician({
-      description: "testing",
-      contactNumber: "3424324",
-      email: "abc@gmail.com",
-    });
-    onContactOpen();
+  const handleCloseTicketClick = (row) => {
+    setSelectedRow(row);
+    onCloseTicketOpen();
   };
 
   return (
@@ -69,17 +63,21 @@ const Table = ({ columns, data }) => {
                   {column.type === "badge" ? (
                     <Badge
                       colorScheme={
-                        row[column.accessor] === "fairly urgent." ||row[column.accessor] === "fairly urgent"
+                        row[column.accessor] === "fairly urgent." ||
+                        row[column.accessor] === "fairly urgent"
                           ? "red"
-                          :  row[column.accessor] === "urgent." ||row[column.accessor] === "urgent"
+                          : row[column.accessor] === "urgent." ||
+                            row[column.accessor] === "urgent"
                           ? "yellow"
                           : "green"
                       }
                       variant="solid"
                     >
-                      {  row[column.accessor] === "fairly urgent." ||row[column.accessor] === "fairly urgent"
+                      {row[column.accessor] === "fairly urgent." ||
+                      row[column.accessor] === "fairly urgent"
                         ? "Fairly Urgent"
-                        : row[column.accessor] === "urgent." ||row[column.accessor] === "urgent"
+                        : row[column.accessor] === "urgent." ||
+                          row[column.accessor] === "urgent"
                         ? "Urgent"
                         : "Normal"}
                     </Badge>
@@ -89,42 +87,41 @@ const Table = ({ columns, data }) => {
                 </Td>
               ))}
               <Td>
-            <Flex gap={2}>
-            <Button
-                    // onClick={() => handleContactClick(row)}
+                <Flex gap={2}>
+                  <Button
+                    onClick={() => handleEditClick(row)}
                     colorScheme="blue"
                     variant="solid"
                   >
-                  Edit
+                    Edit
                   </Button>
-              
                   <Button
-                    // onClick={() => handleAssignClick(row)}
+                    onClick={() => handleCloseTicketClick(row)}
                     colorScheme="red"
                     variant="solid"
                   >
-                   Close Ticket
+                    Close Ticket
                   </Button>
-            </Flex>
-              
-             
+                </Flex>
               </Td>
             </Tr>
           ))}
         </Tbody>
       </ChakraTable>
 
-      {/* <AssignModal
-        isOpen={isAssignOpen}
-        onClose={onAssignClose}
+      {/* Edit Modal */}
+      <EditModal
+        isOpen={isEditOpen}
+        onClose={onEditClose}
         selectedRow={selectedRow}
       />
 
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={onContactClose}
-        technician={selectedTechnician}
-      /> */}
+      {/* Close Ticket Modal */}
+      <CloseTicketModal
+        isOpen={isCloseTicketOpen}
+        onClose={onCloseTicketClose}
+        selectedRow={selectedRow}
+      />
     </Box>
   );
 };
