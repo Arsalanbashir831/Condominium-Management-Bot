@@ -72,8 +72,7 @@ const Chatbot = () => {
 
     if (!hasNextQuestion) {
       console.log("problem statement",tagline);
-      
-      setStep("completed");
+      setStep("problem");
     await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id,true).then(()=>{
       toast({
         title: "Ticket Created",
