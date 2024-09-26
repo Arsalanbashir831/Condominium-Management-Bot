@@ -47,7 +47,8 @@ const Chatbot = () => {
       if (step === "email") {
         await handleEmailStep();
       } else if (step === "problem" ) {
-        await handleProblemStep();
+         await handleProblemStep();
+       
       }else if(step==='completed'){
         await simpleCustomerSupport(userInput)
       }
@@ -105,9 +106,8 @@ const Chatbot = () => {
 
   const simpleCustomerSupport = async (userInput)=>{
     try{
-      const response = await fetch(`${BACKEND_URL}/api/aichat/customerSupport`,{
+      const response = await fetch(`${BACKEND_URL}/api/aichat/customerSupport/${userInput}`,{
         method:'POST',
-        body:JSON.stringify({userInput})
       })
       if (response.ok) {
         const data = await response.json()
