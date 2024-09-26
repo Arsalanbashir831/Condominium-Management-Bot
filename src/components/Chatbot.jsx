@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BACKEND_URL } from "../Constant";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, Flex, useToast } from "@chakra-ui/react";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -8,10 +8,14 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [step, setStep] = useState("email");
   const [userDetail, setUserDetail] = useState(null);
+  const [isProblem , setProblem] = useState(false)
   const chatRef = useRef(null);
   const toast = useToast();
 
   useEffect(() => {
+    if (isProblem) {
+      setStep('problem')
+    }
     const initializeChat = async () => {
       if (!localStorage.getItem('email')) {
         setMessages((prev) => [
@@ -30,7 +34,7 @@ const Chatbot = () => {
     };
 
     initializeChat();
-  }, []);
+  }, [isProblem]);
 
   const handleSendMessage = async () => {
     if (userInput.trim() === "") return;
@@ -42,8 +46,10 @@ const Chatbot = () => {
     try {
       if (step === "email") {
         await handleEmailStep();
-      } else if (step === "problem") {
+      } else if (step === "problem" ) {
         await handleProblemStep();
+      }else if(step==='completed'){
+        await simpleCustomerSupport(userInput)
       }
     } catch (error) {
       handleError();
@@ -72,7 +78,7 @@ const Chatbot = () => {
 
     if (!hasNextQuestion) {
       console.log("problem statement",tagline);
-      
+      setProblem(false)
       setStep("completed");
     await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id,true).then(()=>{
       toast({
@@ -96,9 +102,27 @@ const Chatbot = () => {
     }
   };
 
+
+  const simpleCustomerSupport = async (userInput)=>{
+    try{
+      const response = await fetch(`${BACKEND_URL}/api/aichat/customerSupport`,{
+        method:'POST',
+        body:JSON.stringify({userInput})
+      })
+      if (response.ok) {
+        const data = await response.json()
+      addBotMessage(data.response)
+      setProblem(data.isProblem)
+      }
+    }catch(e){
+      console.log(e);
+      
+    }
+  }
   const addBotMessage = (text) => {
-    setMessages((prev) => [...prev, { sender: "bot", text }]);
+    setMessages((prev) => [...prev, { sender: "bot", text: text.replace(/"/g, '') }]);
   };
+  
 
   const handleError = () => {
     addBotMessage("Sorry, something went wrong. Please try again.");
@@ -158,12 +182,20 @@ const Chatbot = () => {
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
-     <Button  onClick={() => {
+    <Flex my={5} gap={4}>
+    <Button  onClick={() => {
     localStorage.removeItem('email');
     window.location.reload(); 
   }} colorScheme="blue">
       Add New Email
      </Button>
+     <Button  onClick={() => {
+    window.location.reload(); 
+  }} colorScheme="blue">
+      Add New Ticket
+     </Button>
+    </Flex>
+    
       <div className="w-full max-w-lg p-6 bg-white shadow-2xl rounded-lg border border-gray-300">
         <div className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg shadow-inner" ref={chatRef}>
           {messages.map((message, index) => (
