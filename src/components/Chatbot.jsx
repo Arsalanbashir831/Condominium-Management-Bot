@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BACKEND_URL } from "../Constant";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, Spinner, useToast } from "@chakra-ui/react";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -181,6 +181,7 @@ const Chatbot = () => {
               </div>
             </div>
           ))}
+          {isTyping?<> <Spinner size={'lg'}/> </>:null}
         </div>
         <div className="flex space-x-2">
           <input
