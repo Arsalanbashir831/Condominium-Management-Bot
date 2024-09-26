@@ -29,11 +29,35 @@ const EditModal = ({ isOpen, onClose, selectedRow }) => {
     userId: "",
     contactNumber: "", 
     email: "", 
+  status : ""
+   
   });
 const [refresh , setRefresh] = useRecoilState(refreshState)
+const [technicianList , setTechnicianList] = useState([])
+
+
   const toast = useToast(); // Initialize toast
 
+console.log(selectedRow);
+const fetchTechnicians = async ()=>{
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${selectedRow.condominium_id}`,{
+      method:"GET"
+    })
+    if (response.ok) {
+      const data = await response.json()
+      setTechnicianList(data)
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+
   useEffect(() => {
+    fetchTechnicians()
+  
     if (selectedRow) {
       setFormData({
         ProblemStatement: selectedRow.problemStatement,
@@ -43,6 +67,9 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
         userId: selectedRow.user_id,
         contactNumber: selectedRow.contactNumber || "",
         email: selectedRow.email || "",
+        status:selectedRow.status_id,
+        condominium_id:selectedRow.condominium_id
+        
       });
     }
   }, [selectedRow]);
@@ -100,6 +127,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
           priority: formData.priority,
           ProblemStatement: formData.ProblemStatement,
           description: formData.description,
+          statusId:formData.status,  technicianId: formData.technicianId, 
         }),
       });
 
@@ -128,7 +156,7 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
         isClosable: true,
       });
       onClose(); // Close the modal after saving
-      setRefresh(!refresh)
+      setRefresh(!refresh)  
     } catch (error) {
       console.error("Error during save operation:", error);
       // Show error toast
@@ -158,6 +186,21 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
             />
           </FormControl>
           <FormControl mb={4}>
+            <FormLabel>Technician</FormLabel>
+            <Select
+              name="technicianId"
+              value={formData.technicianId}
+              onChange={handleInputChange}
+              placeholder="Select Technician"
+            >
+              {technicianList.map((tech) => (
+                <option key={tech.id} value={tech.id}>
+                  {tech.CompanyName}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl mb={4}>
             <FormLabel>Ticket Description</FormLabel>
             <Textarea
               name="description"
@@ -177,6 +220,19 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
               <option value="urgent">Urgent</option>
               <option value="not urgent">Not Urgent</option>
               <option value="fairly urgent">Fairly Urgent</option>
+            </Select>
+          </FormControl>
+          <FormControl mb={4}>
+            <FormLabel>Status</FormLabel>
+            <Select
+              name="status"
+              value={formData.status}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Status</option>
+              <option value="1">Pending</option>
+              <option value="2">Accepted</option>
+              <option value="3">Rejected</option>
             </Select>
           </FormControl>
 

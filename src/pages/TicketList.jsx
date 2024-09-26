@@ -43,6 +43,8 @@ const TicketList = () => {
       status: ticket.status.name,
       technician_id: ticket.assigned_technicians.id,
       user_id: ticket.user.id,
+      status_id : ticket.status.id,
+      condominium_id : ticket.user.condominium.id
     }));
   };
 
@@ -101,7 +103,7 @@ const TicketList = () => {
 
       <h1 className="text-2xl font-bold mb-4">Ticket List</h1>
       <Flex width={"full"} justify={"end"} my={3}>
-        <AddNewTicketModal onOpen={isOpen} onClose={onClose} />
+        <AddNewTicketModal  onOpen={isOpen} onClose={onClose} />
       </Flex>
 
       {isLoading ? (

@@ -214,6 +214,7 @@ const Chatbot = () => {
               </div>
             </div>
           ))}
+          {isTyping?<> <Spinner size={'lg'}/> </>:null}
         </div>
         <div className="flex space-x-2">
           <input
