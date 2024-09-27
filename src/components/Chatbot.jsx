@@ -47,13 +47,11 @@ const Chatbot = () => {
       if (step === "email") {
         await handleEmailStep();
       } else if (step === "problem" ) {
-         await handleProblemStep();
-       
-      }else if(step==='completed'){
-        await simpleCustomerSupport(userInput)
+         await handleProblemStep()
       }
     } catch (error) {
-      handleError();
+      //  handleError();
+      console.log(error);
     } finally {
       setIsTyping(false);
     }
@@ -74,45 +72,45 @@ const Chatbot = () => {
   };
 
   const handleProblemStep = async () => {
-    const { response, hasNextQuestion, tagline, priority } = await getBotResponse(userInput);
+    console.log('function is called');
+   await simpleCustomerSupport(userInput, userDetail.id , userDetail.name, userDetail.condominium.id);
     addBotMessage(response);
 
-    if (!hasNextQuestion) {
-      console.log("problem statement",tagline);
-      setProblem(false)
-      setStep("completed");
-    await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id,true).then(()=>{
-      toast({
-        title: "Ticket Created",
-        description: "Your support ticket has been created successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }).catch(()=>{
-      toast({
-        title: "Ticket Not Created",
-        description: "Something went wrong",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    });
+ 
+   
+      // await addTicket(userDetail.id, priority, tagline, userDetail.condominium.id,true).then(()=>{
+      //   toast({
+      //     title: "Ticket Created",
+      //     description: "Your support ticket has been created successfully.",
+      //     status: "success",
+      //     duration: 5000,
+      //     isClosable: true,
+      //   });
+      // }).catch(()=>{
+      //   toast({
+      //     title: "Ticket Not Created",
+      //     description: "Something went wrong",
+      //     status: "error",
+      //     duration: 5000,
+      //     isClosable: true,
+      //   });
+      // });
     
-     
-    }
+    
   };
 
 
-  const simpleCustomerSupport = async (userInput)=>{
+  const simpleCustomerSupport = async (userInput,userId, username , condominiumId)=>{
     try{
-      const response = await fetch(`${BACKEND_URL}/api/aichat/customerSupport/${userInput}`,{
+      const response = await fetch(`${BACKEND_URL}/api/aichat/customerSupport/${userInput}/${userId}/${username}/${condominiumId}`,{
         method:'POST',
+   
       })
       if (response.ok) {
         const data = await response.json()
-      addBotMessage(data.response)
-      setProblem(data.isProblem)
+       addBotMessage(data.response)
+       setProblem(data.isProblem)
+      
       }
     }catch(e){
       console.log(e);
@@ -155,6 +153,7 @@ const Chatbot = () => {
 
   const getBotResponse = async (problemStatement) => {
     try {
+      console.log("username",userDetail.name);
       const response = await fetch(`${BACKEND_URL}/api/aichat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
