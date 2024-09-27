@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BACKEND_URL } from "../Constant";
-import { Button, Flex, useToast } from "@chakra-ui/react";
+import { Button, Flex, Spinner, useToast } from "@chakra-ui/react";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
