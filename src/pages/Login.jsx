@@ -22,8 +22,8 @@ const Login = () => {
         const responseData = await response.json();
 
         toast({
-          title: 'Login Successful',
-          description: 'You have successfully logged in.',
+          title: 'Login Effettuato',
+          description: 'Accesso eseguito con successo.',
           status: 'success',
           duration: 5000,
           isClosable: true,
@@ -34,8 +34,8 @@ const Login = () => {
    
         const errorData = await response.json();
         toast({
-          title: 'Login Failed',
-          description: errorData.message || 'An error occurred during login.',
+          title: 'Accesso Fallito',
+          description: errorData.message || "Si è verificato un errore durante l'accesso.",
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -44,8 +44,8 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred. Please try again.',
+        title: 'Errore',
+        description: 'Si è verificato un errore imprevisto. Riprova.',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -68,7 +68,7 @@ const Login = () => {
       >
         <Stack spacing={4}>
           <Text fontSize="2xl" fontWeight="bold" color="#292828" textAlign={'center'}>
-           Condomium Management 
+            Gestione del Condominio
           </Text>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
@@ -77,7 +77,7 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
-                  {...register('email', { required: 'Email is required' })}
+                  {...register('email', { required: 'Email è richiesta' })}
                   borderColor="blue.500"
                 />
               </FormControl>
@@ -86,7 +86,7 @@ const Login = () => {
                 <Input
                   id="password"
                   type="password"
-                  {...register('password', { required: 'Password is required' })}
+                  {...register('password', { required: 'Password è richiesta' })}
                   borderColor="blue.500"
                 />
               </FormControl>
@@ -95,7 +95,7 @@ const Login = () => {
                 colorScheme="blue"
                 size="lg"
               >
-                Login
+                Accedi
               </Button>
             </Stack>
           </form>

@@ -172,106 +172,107 @@ const fetchTechnicians = async ()=>{
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Edit Ticket</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <FormControl mb={4}>
-            <FormLabel>Problem Statement</FormLabel>
-            <Textarea
-              name="ProblemStatement"
-              value={formData.ProblemStatement}
-              onChange={handleInputChange}
-            />
-          </FormControl>
-          <FormControl mb={4}>
-            <FormLabel>Technician</FormLabel>
-            <Select
-              name="technicianId"
-              value={formData.technicianId}
-              onChange={handleInputChange}
-              placeholder="Select Technician"
-            >
-              {technicianList.map((tech) => (
-                <option key={tech.id} value={tech.id}>
-                  {tech.CompanyName}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl mb={4}>
-            <FormLabel>Ticket Description</FormLabel>
-            <Textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-            />
-          </FormControl>
-
-          <FormControl mb={4}>
-            <FormLabel>Priority</FormLabel>
-            <Select
-              name="priority"
-              value={formData.priority}
-              onChange={handleInputChange}
-            >
-              <option value="">Select priority</option>
-              <option value="urgent">Urgent</option>
-              <option value="not urgent">Not Urgent</option>
-              <option value="fairly urgent">Fairly Urgent</option>
-            </Select>
-          </FormControl>
-          <FormControl mb={4}>
-            <FormLabel>Status</FormLabel>
-            <Select
-              name="status"
-              value={formData.status}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Status</option>
-              <option value="1">Pending</option>
-              <option value="2">Accepted</option>
-              <option value="3">Rejected</option>
-            </Select>
-          </FormControl>
-
-          <Divider />
-
-          <ModalHeader>Edit User Info</ModalHeader>
-
-          <FormControl mb={4}>
-            <FormLabel>Contact No</FormLabel>
-            <Input
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleInputChange}
-              placeholder="Enter contact number"
-            />
-          </FormControl>
-
-          <FormControl mb={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter email"
-            />
-          </FormControl>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
-            Save
-          </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>Modifica Ticket</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        <FormControl mb={4}>
+          <FormLabel>Dichiarazione del Problema</FormLabel>
+          <Textarea
+            name="ProblemStatement"
+            value={formData.ProblemStatement}
+            onChange={handleInputChange}
+          />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Tecnico</FormLabel>
+          <Select
+            name="technicianId"
+            value={formData.technicianId}
+            onChange={handleInputChange}
+            placeholder="Seleziona Tecnico"
+          >
+            {technicianList.map((tech) => (
+              <option key={tech.id} value={tech.id}>
+                {tech.CompanyName}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Descrizione del Ticket</FormLabel>
+          <Textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+          />
+        </FormControl>
+  
+        <FormControl mb={4}>
+          <FormLabel>Priorità</FormLabel>
+          <Select
+            name="priority"
+            value={formData.priority}
+            onChange={handleInputChange}
+          >
+            <option value="">Seleziona priorità</option>
+            <option value="urgent">Urgente</option>
+            <option value="not urgent">Non urgente</option>
+            <option value="fairly urgent">Abbastanza urgente</option>
+          </Select>
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Stato</FormLabel>
+          <Select
+            name="status"
+            value={formData.status}
+            onChange={handleInputChange}
+          >
+            <option value="">Seleziona stato</option>
+            <option value="1">In sospeso</option>
+            <option value="2">Accettato</option>
+            <option value="3">Rifiutato</option>
+          </Select>
+        </FormControl>
+  
+        <Divider />
+  
+        <ModalHeader>Modifica Informazioni Utente</ModalHeader>
+  
+        <FormControl mb={4}>
+          <FormLabel>Numero di Contatto</FormLabel>
+          <Input
+            name="contactNumber"
+            value={formData.contactNumber}
+            onChange={handleInputChange}
+            placeholder="Inserisci numero di contatto"
+          />
+        </FormControl>
+  
+        <FormControl mb={4}>
+          <FormLabel>Email</FormLabel>
+          <Input
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Inserisci email"
+          />
+        </FormControl>
+      </ModalBody>
+  
+      <ModalFooter>
+        <Button colorScheme="blue" mr={3} onClick={handleSave}>
+          Salva
+        </Button>
+        <Button variant="ghost" onClick={onClose}>
+          Annulla
+        </Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+  
   );
 };
 

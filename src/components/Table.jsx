@@ -75,11 +75,11 @@ const Table = ({ columns, data }) => {
                     >
                       {row[column.accessor] === "fairly urgent." ||
                       row[column.accessor] === "fairly urgent"
-                        ? "Fairly Urgent"
+                        ? "Abbastanza urgente"
                         : row[column.accessor] === "urgent." ||
                           row[column.accessor] === "urgent"
-                        ? "Urgent"
-                        : "Normal"}
+                        ? "Urgente"
+                        : "Normale"}
                     </Badge>
                   ) : (
                     row[column.accessor] || "N/A"
@@ -93,14 +93,14 @@ const Table = ({ columns, data }) => {
                     colorScheme="blue"
                     variant="solid"
                   >
-                    Edit
+                    Modifica
                   </Button>
                   <Button
                     onClick={() => handleCloseTicketClick(row)}
                     colorScheme="red"
                     variant="solid"
                   >
-                    Close Ticket
+                    Chiudere il biglietto
                   </Button>
                 </Flex>
               </Td>

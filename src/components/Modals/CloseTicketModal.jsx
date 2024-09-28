@@ -71,19 +71,19 @@ const [refresh , setRefresh] = useRecoilState(refreshState)
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Confirm Close Ticket</ModalHeader>
+        <ModalHeader>Confermare la chiusura del biglietto</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text>
-            Are you sure you want to close this ticket? This action cannot be undone.
+          Siete sicuri di voler chiudere questo ticket? Questa azione non può essere annullata.
           </Text>
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Cancel
+          Annullamento
           </Button>
           <Button colorScheme="red" onClick={handleConfirmClose}>
-            Confirm
+          Confermare
           </Button>
         </ModalFooter>
       </ModalContent>

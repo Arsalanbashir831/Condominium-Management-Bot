@@ -182,57 +182,65 @@ const Chatbot = () => {
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-green-50">
     <Flex my={5} gap={4}>
-    <Button  onClick={() => {
-    localStorage.removeItem('email');
-    window.location.reload(); 
-  }} colorScheme="blue">
-      Add New Email
-     </Button>
-     <Button  onClick={() => {
-    window.location.reload(); 
-  }} colorScheme="blue">
-      Add New Ticket
-     </Button>
+      <Button 
+        onClick={() => {
+          localStorage.removeItem('email');
+          window.location.reload(); 
+        }} 
+        colorScheme="blue"
+      >
+        Aggiungi Nuova Email
+      </Button>
+      <Button 
+        onClick={() => {
+          window.location.reload(); 
+        }} 
+        colorScheme="blue"
+      >
+        Aggiungi Nuovo Ticket
+      </Button>
     </Flex>
-    
-      <div className="w-full max-w-lg p-6 bg-white shadow-2xl rounded-lg border border-gray-300">
-        <div className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg shadow-inner" ref={chatRef}>
-          {messages.map((message, index) => (
-            <div key={index} className={`flex flex-row mb-2 ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`p-4 rounded-lg ${message.sender === "bot" ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-800"} shadow-md`}>
-                {message.text}
-                {message.sender === "bot" && isTyping && (
-                  <div className="inline-block ml-2">
-                    <div className="animate-pulse inline-block">
-                      <div className="w-2 h-2 bg-white rounded-full inline-block mr-1"></div>
-                      <div className="w-2 h-2 bg-white rounded-full inline-block mr-1"></div>
-                      <div className="w-2 h-2 bg-white rounded-full inline-block"></div>
-                    </div>
+  
+    <div className="w-full max-w-lg p-6 bg-white shadow-2xl rounded-lg border border-gray-300">
+      <div className="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg shadow-inner" ref={chatRef}>
+        {messages.map((message, index) => (
+          <div key={index} className={`flex flex-row mb-2 ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <div className={`p-4 rounded-lg ${message.sender === "bot" ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-800"} shadow-md`}>
+              {message.text}
+              {message.sender === "bot" && isTyping && (
+                <div className="inline-block ml-2">
+                  <div className="animate-pulse inline-block">
+                    <div className="w-2 h-2 bg-white rounded-full inline-block mr-1"></div>
+                    <div className="w-2 h-2 bg-white rounded-full inline-block mr-1"></div>
+                    <div className="w-2 h-2 bg-white rounded-full inline-block"></div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-          ))}
-          {isTyping?<> <Spinner size={'lg'}/> </>:null}
-        </div>
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            className="flex-grow px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder={step === "email" ? "Enter your email..." : "Describe your problem..."}
-          />
-          <button
-            onClick={handleSendMessage}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md"
-          >
-            Send
-          </button>
-        </div>
+          </div>
+        ))}
+        {isTyping ? <> <Spinner size={'lg'}/> </> : null}
+      </div>
+      
+      <div className="flex space-x-2">
+        <input
+          type="text"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          onKeyDown={handleKeyPress}
+          className="flex-grow px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder={step === "email" ? "Inserisci la tua email..." : "Descrivi il tuo problema..."}
+        />
+        <button
+          onClick={handleSendMessage}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md"
+        >
+          Invia
+        </button>
       </div>
     </div>
+  </div>
+  
   );
 };
 

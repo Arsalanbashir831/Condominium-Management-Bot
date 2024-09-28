@@ -196,21 +196,21 @@ const AddNewTicketModal = () => {
   return (
     <>
       <Button onClick={onOpen} colorScheme="blue">
-        Add New Ticket
+      Aggiungi un nuovo biglietto
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add New Ticket</ModalHeader>
+          <ModalHeader>Aggiungi un nuovo biglietto</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit}>
             <ModalBody>
               <VStack spacing={4}>
                 <FormControl isRequired>
-                  <FormLabel>Select Condominium</FormLabel>
+                  <FormLabel>Selezionare il condominio</FormLabel>
                   <Input
-                    placeholder="Search for Condominium"
+                    placeholder="Selezionare il condominio"
                     value={condominiumSearch}
                     onChange={handleCondominiumSearch}
                   />
@@ -241,9 +241,9 @@ const AddNewTicketModal = () => {
 
                 {condo && (
                   <FormControl isRequired>
-                    <FormLabel>Select User</FormLabel>
+                    <FormLabel>Selezionare l'utente</FormLabel>
                     <Input
-                      placeholder="Search for a user by name"
+                      placeholder="Ricerca di un utente per nome"
                       value={userSearch}
                       onChange={handleUserSearch}
                     />
@@ -274,9 +274,9 @@ const AddNewTicketModal = () => {
                 )}
 
                 <FormControl isRequired>
-                  <FormLabel>Select Technician</FormLabel>
+                  <FormLabel>Seleziona il tecnico</FormLabel>
                   <Select
-                    placeholder="Select technician"
+                    placeholder="Seleziona il tecnico"
                     value={technician}
                     onChange={(e) => setTechnician(e.target.value)}
                   >
@@ -289,22 +289,22 @@ const AddNewTicketModal = () => {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Priority</FormLabel>
+                  <FormLabel>Priorità</FormLabel>
                   <Select
-                    placeholder="Select priority"
+                    placeholder="Selezionare la priorità"
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
                   >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
+                    <option value="Low">Basso</option>
+                    <option value="Medium">Medio</option>
+                    <option value="High">Alto</option>
                   </Select>
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Problem Statement</FormLabel>
+                  <FormLabel>Dichiarazione del problema</FormLabel>
                   <Textarea
-                    placeholder="Enter the problem statement"
+                    placeholder="Inserire la dichiarazione del problema"
                     value={problemStatement}
                     onChange={(e) => setProblemStatement(e.target.value)}
                   />
@@ -315,17 +315,17 @@ const AddNewTicketModal = () => {
                     isChecked={allowAutomation}
                     onChange={(e) => setAllowAutomation(e.target.checked)}
                   />
-                  <FormLabel ml={2}>Allow Automated Emails</FormLabel>
+                  <FormLabel ml={2}>Consentire l'invio di e-mail automatiche</FormLabel>
                 </FormControl>
               </VStack>
             </ModalBody>
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoading}>
-                Submit
+              Invia
               </Button>
               <Button variant="ghost" onClick={onClose}>
-                Cancel
+              Annullamento
               </Button>
             </ModalFooter>
           </form>

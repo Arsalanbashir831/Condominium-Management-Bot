@@ -82,28 +82,28 @@ const TicketList = () => {
   }, [refresh]);
 
   const columns = [
-    { Header: "Id", accessor: "id" },
-    { Header: "Name", accessor: "name" },
+    { Header: "ID", accessor: "id" },
+    { Header: "Nome", accessor: "name" },
     { Header: "Email", accessor: "email" },
-    { Header: "Contact Number", accessor: "contactNumber" },
-    { Header: "Condominium", accessor: "condominium" },
-    { Header: "Problem Statment", accessor: "problemStatement" },
-    { Header: "Priority", accessor: "priority", type: "badge" },
-    { Header: "Technician", accessor: "technician" },
-    { Header: "Technician Role", accessor: "role" },
-    { Header: "Preffered Communication", accessor: "prefCommunication" },
-    { Header: "Phone/email", accessor: "technicianContact" },
-    { Header: "Notes", accessor: "description" },
-    { Header: "Status", accessor: "status" },
+    { Header: "Numero di Contatto", accessor: "contactNumber" },
+    { Header: "Condominio", accessor: "condominium" },
+    { Header: "Dichiarazione del Problema", accessor: "problemStatement" },
+    { Header: "Priorità", accessor: "priority", type: "badge" },
+    { Header: "Tecnico", accessor: "technician" },
+    { Header: "Ruolo del Tecnico", accessor: "role" },
+    { Header: "Comunicazione Preferita", accessor: "prefCommunication" },
+    { Header: "Telefono/email", accessor: "technicianContact" },
+    { Header: "Note", accessor: "description" },
+    { Header: "Stato", accessor: "status" },
   ];
 
   return (
     <div className="p-4">
       <Box py={5}>{/* Uncomment if needed */}</Box>
 
-      <h1 className="text-2xl font-bold mb-4">Ticket List</h1>
+      <h1 className="text-2xl font-bold mb-4">Elenco Ticket</h1>
       <Flex width={"full"} justify={"end"} my={3}>
-        <AddNewTicketModal  onOpen={isOpen} onClose={onClose} />
+        <AddNewTicketModal onOpen={isOpen} onClose={onClose} />
       </Flex>
 
       {isLoading ? (
@@ -123,7 +123,7 @@ const TicketList = () => {
               my={2}
             >
               <Flex gap={2} alignItems={"center"}>
-                <Text>All Tickets</Text>
+                <Text>Tutti i Ticket</Text>
               </Flex>
             </Button>
             <Button
@@ -136,7 +136,7 @@ const TicketList = () => {
               my={2}
             >
               <Flex gap={2} alignItems={"center"}>
-                <Text>Closed Tickets</Text>
+                <Text>Ticket Chiusi</Text>
               </Flex>
             </Button>
           </Flex>
