@@ -10,68 +10,133 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Select,
-  Checkbox,
+  Input,
   Textarea,
   useDisclosure,
   Box,
   VStack,
   useToast,
-  Spinner, // Import useToast
+  List,
+  ListItem, Select, Checkbox
 } from '@chakra-ui/react';
 import { BACKEND_URL } from '../../Constant';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { refreshState } from '../../atoms/refreshState';
 
 const AddNewTicketModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast(); // Initialize toast
+  const toast = useToast();
   const [user, setUser] = useState(null);
   const [technician, setTechnician] = useState(null);
   const [priority, setPriority] = useState('');
   const [problemStatement, setProblemStatement] = useState('');
   const [allowAutomation, setAllowAutomation] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [technicianList, setTechnicianList] = useState([]);
- const [refresh , setRefresh] = useRecoilState(refreshState)
- const [isLoading , setLoading] = useState(false)
-
+  const [refresh, setRefresh] = useRecoilState(refreshState);
+  const [isLoading, setLoading] = useState(false);
+  const [userSearch, setUserSearch] = useState('');
+  const [condominiumList, setCondominiumList] = useState([]);
+  const [condominiumSearch, setCondominiumSearch] = useState('');
+  const [filteredCondominium, setFilteredCondominium] = useState([]);
+  const [condo, setCondo] = useState('');
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchCondominium = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/user/`, {
-          method: 'GET',
+        const response = await fetch(`${BACKEND_URL}/api/condominium/`, {
+          method: 'GET'
         });
         if (response.ok) {
           const data = await response.json();
-          setUserList(data);
-          console.log(data);
+          setCondominiumList(data);
         }
       } catch (error) {
         console.log(error);
+      }
+    };
+
+    const fetchUsers = async () => {
+      if (condo?.id) {
+        try {
+          const response = await fetch(`${BACKEND_URL}/api/user/condo/${condo.id}`, {
+            method: 'GET',
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setUserList(data);
+            setFilteredUsers(data);  // Initially set filtered users to the entire list
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
     const fetchAllTechnicians = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${user?.condominium?.id}`, {
-          method: 'GET',
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTechnicianList(data);
+      if (user?.condominium?.id) {
+        try {
+          setLoading(true);
+          const response = await fetch(`${BACKEND_URL}/api/technician/byCondominium?condominiumId=${user.condominium.id}`, {
+            method: 'GET',
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setTechnicianList(data);
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-      } finally{
-        setLoading(false)
       }
     };
-    fetchAllTechnicians();
+
+    fetchCondominium();
     fetchUsers();
-  }, [technicianList , user?.condominium?.id]);
+    fetchAllTechnicians();
+  }, [condo, user?.condominium?.id]);
+
+  const handleCondominiumSearch = (e) => {
+    const query = e.target.value;
+    setCondominiumSearch(query);
+
+    if (query.length > 0) {
+      const filtered = condominiumList.filter((u) =>
+        u.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredCondominium(filtered);
+    } else {
+      setFilteredCondominium([]);
+    }
+  };
+
+  const handleUserSearch = (e) => {
+    const query = e.target.value;
+    setUserSearch(query);
+
+    if (query.length > 0) {
+      const filtered = userList.filter((u) =>
+        `${u.name} ${u.surname}`.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    } else {
+      setFilteredUsers(userList); // Show all users if search query is cleared
+    }
+  };
+
+  const handleCondoSelect = (selectedCondo) => {
+    setCondo(selectedCondo);
+    setCondominiumSearch(`${selectedCondo.name}`);
+    setFilteredCondominium([]);  // Hide dropdown after selection
+  };
+
+  const handleUserSelect = (selectedUser) => {
+    setUser(selectedUser);
+    setUserSearch(`${selectedUser.name} ${selectedUser.surname}`);
+    setFilteredUsers([]);  // Hide dropdown after selection
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,7 +144,7 @@ const AddNewTicketModal = () => {
       const response = await fetch(`${BACKEND_URL}/api/ticket/manual`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Set content type for JSON
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId: user.id,
@@ -89,46 +154,44 @@ const AddNewTicketModal = () => {
           IsPermitToAutoMail: allowAutomation,
         }),
       });
+
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
         toast({
-          title: "Ticket Created.",
-          description: "Your ticket has been submitted successfully.",
-          status: "success",
+          title: 'Ticket Created.',
+          description: 'Your ticket has been submitted successfully.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
       } else {
         toast({
-          title: "Submission Failed.",
-          description: "There was an error submitting your ticket.",
-          status: "error",
+          title: 'Submission Failed.',
+          description: 'There was an error submitting your ticket.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
         });
       }
-      setRefresh(!refresh)
+      setRefresh(!refresh);
     } catch (error) {
       console.error(error);
       toast({
-        title: "Error Occurred.",
-        description: "An unexpected error occurred. Please try again.",
-        status: "error",
+        title: 'Error Occurred.',
+        description: 'An unexpected error occurred. Please try again.',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
     } finally {
-      // Reset form
       setUser(null);
       setTechnician(null);
       setPriority('');
       setAllowAutomation(false);
       setProblemStatement('');
+      setUserSearch('');
       onClose();
     }
   };
-console.log(user);
 
   return (
     <>
@@ -144,26 +207,72 @@ console.log(user);
           <form onSubmit={handleSubmit}>
             <ModalBody>
               <VStack spacing={4}>
-                {/* Select box for Users */}
                 <FormControl isRequired>
-                  <FormLabel>Select User</FormLabel>
-                  <Select
-                    placeholder="Select user"
-                    value={JSON.stringify(user)}
-                    onChange={(e) => setUser(JSON.parse(e.target.value))}
-                  >
-                 
-                    {userList?.map((data) => (
-                      <option key={data.id} value={JSON.stringify(data)}>
-                        {data.name} {data.surname}
-                      </option>
-                    ))}
-            
-                   
-                  </Select>
+                  <FormLabel>Select Condominium</FormLabel>
+                  <Input
+                    placeholder="Search for Condominium"
+                    value={condominiumSearch}
+                    onChange={handleCondominiumSearch}
+                  />
+                  {filteredCondominium.length > 0 && (
+                    <Box
+                      border="1px solid #e2e8f0"
+                      borderRadius="md"
+                      mt={2}
+                      maxHeight="150px"
+                      overflowY="auto"
+                      zIndex={1000}
+                    >
+                      <List>
+                        {filteredCondominium.map((condo) => (
+                          <ListItem
+                            key={condo.id}
+                            p={2}
+                            _hover={{ bg: 'gray.100', cursor: 'pointer' }}
+                            onClick={() => handleCondoSelect(condo)}
+                          >
+                            {condo.name}
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Box>
+                  )}
                 </FormControl>
 
-                {/* Select box for Technicians */}
+                {condo && (
+                  <FormControl isRequired>
+                    <FormLabel>Select User</FormLabel>
+                    <Input
+                      placeholder="Search for a user by name"
+                      value={userSearch}
+                      onChange={handleUserSearch}
+                    />
+                    {filteredUsers.length > 0 && (
+                      <Box
+                        border="1px solid #e2e8f0"
+                        borderRadius="md"
+                        mt={2}
+                        maxHeight="150px"
+                        overflowY="auto"
+                        zIndex={1000}
+                      >
+                        <List>
+                          {filteredUsers.map((user) => (
+                            <ListItem
+                              key={user.id}
+                              p={2}
+                              _hover={{ bg: 'gray.100', cursor: 'pointer' }}
+                              onClick={() => handleUserSelect(user)}
+                            >
+                              {user.name} {user.surname}
+                            </ListItem>
+                          ))}
+                        </List>
+                      </Box>
+                    )}
+                  </FormControl>
+                )}
+
                 <FormControl isRequired>
                   <FormLabel>Select Technician</FormLabel>
                   <Select
@@ -171,25 +280,14 @@ console.log(user);
                     value={technician}
                     onChange={(e) => setTechnician(e.target.value)}
                   >
-                    {technicianList?.map((data) => (
-                      <option key={data.id} value={data.id}>
-                        {data.CompanyName}
+                    {technicianList.map((tech) => (
+                      <option key={tech.id} value={tech.id}>
+                        {tech.CompanyName} 
                       </option>
                     ))}
                   </Select>
                 </FormControl>
 
-                {/* Checkbox for automation permission */}
-                <FormControl>
-                  <Checkbox
-                    isChecked={allowAutomation}
-                    onChange={(e) => setAllowAutomation(e.target.checked)}
-                  >
-                    Allow email automation
-                  </Checkbox>
-                </FormControl>
-
-                {/* Priority selection box */}
                 <FormControl isRequired>
                   <FormLabel>Priority</FormLabel>
                   <Select
@@ -197,30 +295,37 @@ console.log(user);
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
                   >
-                    <option value="urgent">Urgent</option>
-                    <option value="not urgent">Not Urgent</option>
-                    <option value="fairly urgent">Fairly Urgent</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
                   </Select>
                 </FormControl>
 
-                {/* Problem Statement */}
                 <FormControl isRequired>
                   <FormLabel>Problem Statement</FormLabel>
                   <Textarea
-                    placeholder="Describe the problem..."
+                    placeholder="Enter the problem statement"
                     value={problemStatement}
                     onChange={(e) => setProblemStatement(e.target.value)}
                   />
+                </FormControl>
+
+                <FormControl display="flex" alignItems="center">
+                  <Checkbox
+                    isChecked={allowAutomation}
+                    onChange={(e) => setAllowAutomation(e.target.checked)}
+                  />
+                  <FormLabel ml={2}>Allow Automated Emails</FormLabel>
                 </FormControl>
               </VStack>
             </ModalBody>
 
             <ModalFooter>
+              <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoading}>
+                Submit
+              </Button>
               <Button variant="ghost" onClick={onClose}>
                 Cancel
-              </Button>
-              <Button colorScheme="blue" type="submit" ml={3}>
-                Submit Ticket
               </Button>
             </ModalFooter>
           </form>
