@@ -201,7 +201,7 @@ const fetchTechnicians = async ()=>{
           </Select>
         </FormControl>
         <FormControl mb={4}>
-          <FormLabel>Descrizione del Ticket</FormLabel>
+          <FormLabel>Note aggguiuntive</FormLabel>
           <Textarea
             name="description"
             value={formData.description}

@@ -100,7 +100,7 @@ const Table = ({ columns, data }) => {
                     colorScheme="red"
                     variant="solid"
                   >
-                    Chiudere il biglietto
+                   chiudi il ticket
                   </Button>
                 </Flex>
               </Td>

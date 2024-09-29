@@ -196,7 +196,7 @@ const AddNewTicketModal = () => {
   return (
     <>
       <Button onClick={onOpen} colorScheme="blue">
-      Aggiungi un nuovo biglietto
+      apri un ticket
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -302,9 +302,9 @@ const AddNewTicketModal = () => {
                 </FormControl>
 
                 <FormControl isRequired>
-                  <FormLabel>Dichiarazione del problema</FormLabel>
+                  <FormLabel>Descrizione del problema</FormLabel>
                   <Textarea
-                    placeholder="Inserire la dichiarazione del problema"
+                    placeholder="  ⁠Descrivi il problema "
                     value={problemStatement}
                     onChange={(e) => setProblemStatement(e.target.value)}
                   />
@@ -315,14 +315,14 @@ const AddNewTicketModal = () => {
                     isChecked={allowAutomation}
                     onChange={(e) => setAllowAutomation(e.target.checked)}
                   />
-                  <FormLabel ml={2}>Consentire l'invio di e-mail automatiche</FormLabel>
+                  <FormLabel ml={2}>⁠Contatta il tecnico automaticamente</FormLabel>
                 </FormControl>
               </VStack>
             </ModalBody>
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoading}>
-              Invia
+              Annulla
               </Button>
               <Button variant="ghost" onClick={onClose}>
               Annullamento
