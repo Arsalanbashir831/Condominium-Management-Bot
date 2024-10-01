@@ -175,13 +175,13 @@ const AddNewTicketModal = () => {
       setRefresh(!refresh);
     } catch (error) {
       console.error(error);
-      toast({
-        title: 'Error Occurred.',
-        description: 'An unexpected error occurred. Please try again.',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+      // toast({
+      //   title: 'Error Occurred.',
+      //   description: 'An unexpected error occurred. Please try again.',
+      //   status: 'error',
+      //   duration: 5000,
+      //   isClosable: true,
+      // });
     } finally {
       setUser(null);
       setTechnician(null);
