@@ -322,10 +322,10 @@ const AddNewTicketModal = () => {
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoading}>
-              Annulla
+              Invia
               </Button>
               <Button variant="ghost" onClick={onClose}>
-              Annullamento
+              Annulla
               </Button>
             </ModalFooter>
           </form>
