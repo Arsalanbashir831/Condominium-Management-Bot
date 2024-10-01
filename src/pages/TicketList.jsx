@@ -35,7 +35,7 @@ const TicketList = () => {
       technician: ticket.assigned_technicians.CompanyName || "",
       role: ticket.assigned_technicians.SectorName || "",
       prefCommunication:
-        ticket.assigned_technicians.prefCommunication.name==='Email'?'E-Mail':'Telefono' ,
+        ticket.assigned_technicians.prefCommunication.name ,
       technicianContact:
         ticket.assigned_technicians.prefCommunication.name === "Email"
           ? ticket.assigned_technicians.email

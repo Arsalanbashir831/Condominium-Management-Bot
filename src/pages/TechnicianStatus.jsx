@@ -5,12 +5,28 @@ import { BACKEND_URL } from '../Constant';
 import { Box, Heading, Text, Icon } from '@chakra-ui/react';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 
+
 const TechnicianStatus = () => {
   const { ticketId, statusId: initialStatusId } = useParams(); // Get ticketId and statusId from the route
   const [statusId, setStatusId] = useState(initialStatusId); // Store selected statusId
   const [isUpdating, setIsUpdating] = useState(false); // Loading state
   const toast = useToast(); // For showing notifications
 
+
+  const sendMailForRejection = async ()=>{
+    try {
+      const response = await fetch (`${BACKEND_URL}/api/ticket/rejectTicket/${ticketId}`,{
+        method:'POST',
+      })
+      if (response.ok){
+        console.log('rejection mail sended');
+        
+      }
+    } catch (error) {
+      console.log('got some issues');
+      
+    }
+  }
   // Function to update ticket status
   const updateTicketStatus = async (status) => {
     setIsUpdating(true); // Set loading state to true
@@ -36,6 +52,10 @@ const TechnicianStatus = () => {
           duration: 3000,
           isClosable: true,
         });
+        if (statusId==='3' || statusId===3) {
+          await sendMailForRejection()
+        }
+        
       } else {
         toast({
           title: 'Errore',
