@@ -1,5 +1,6 @@
-import { Box, Button, Container, FormControl, FormLabel, Input, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Container, FormControl, FormLabel, Input, Stack, Text, useToast, Spinner, Center } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { BACKEND_URL } from '../Constant';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,13 +8,15 @@ const Login = () => {
   const { register, handleSubmit } = useForm();
   const toast = useToast();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // Track loading state
 
   const onSubmit = async (data) => {
+    setLoading(true); // Set loading to true when form is submitted
     try {
       const response = await fetch(`${BACKEND_URL}/api/admin/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
@@ -28,10 +31,9 @@ const Login = () => {
           duration: 5000,
           isClosable: true,
         });
-        localStorage.setItem('authToken' , responseData.token)
-        navigate('/ticketList'); 
+        localStorage.setItem('authToken', responseData.token);
+        navigate('/ticketList');
       } else {
-   
         const errorData = await response.json();
         toast({
           title: 'Accesso Fallito',
@@ -50,9 +52,9 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setLoading(false); // Stop loading once the request is complete
     }
-
-    console.log(data);
   };
 
   return (
@@ -94,12 +96,19 @@ const Login = () => {
                 type="submit"
                 colorScheme="blue"
                 size="lg"
+                disabled={loading} // Disable button and show spinner when loading
+                loadingText="Accedendo"
               >
                 Accedi
               </Button>
             </Stack>
           </form>
         </Stack>
+        {loading && (
+          <Center mt={4}>
+            <Spinner size="xl" color="blue.500" />
+          </Center>
+        )}
       </Box>
     </Container>
   );
