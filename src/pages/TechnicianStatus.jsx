@@ -52,9 +52,9 @@ const TechnicianStatus = () => {
           duration: 3000,
           isClosable: true,
         });
-        if (statusId==='3' || statusId===3) {
-          await sendMailForRejection()
-        }
+        // if (statusId==='3' || statusId===3) {
+        //   await sendMailForRejection()
+        // }
         
       } else {
         toast({
